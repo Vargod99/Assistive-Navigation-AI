@@ -1,35 +1,4 @@
-"""Spatial localisation: 2-D bounding boxes -> clock direction + metric distance.
 
-Conventions
------------
-* Boxes are ``[x, y, w, h]`` in pixels, (x, y) = top-left corner.
-* Camera is modelled as an ideal pinhole with square pixels and the principal
-  point at the image centre. The horizontal field of view (HFOV, default 60 deg)
-  gives the focal length in pixels::
-
-        f_px = (W / 2) / tan(HFOV / 2)
-
-* Bearing is the horizontal angle between the optical axis and the ray through
-  the box centre (negative = left, positive = right)::
-
-        bearing = atan((cx - W/2) / f_px)
-
-* Distance uses similar triangles with a known real-world object height::
-
-        Z = H_real * f_px / h_px
-
-Clock directions
-----------------
-12 o'clock is straight ahead; each clock hour is 30 deg. Two mappings are
-offered and both are clamped to the 9 o'clock to 3 o'clock frontal range:
-
-* ``"angular"`` (default) - physically correct: hour = 12 + round(bearing / 30).
-  With a 60 deg camera the image edges are at +/-30 deg, i.e. 11 to 1 o'clock.
-  Use this when the user physically turns toward the announced hour.
-* ``"fov"`` - linear: the full camera HFOV is spread over 9 to 3 o'clock
-  (left edge -> 9, centre -> 12, right edge -> 3). Finer-grained relative
-  layout, but the hour no longer equals a true heading.
-"""
 from __future__ import annotations
 
 import math
