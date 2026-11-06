@@ -1,20 +1,4 @@
-"""Model wrappers: YOLOv3 object detector + MobileNetV2 posture classifier.
 
-YOLOv3
-------
-OpenCV >= 5.0 removed the Darknet importer (``cv2.dnn.readNetFromDarknet``),
-so the default backend here is a small native PyTorch implementation that
-parses the original Darknet ``.cfg`` and loads the original ``.weights`` file.
-It supports every layer type used by ``yolov3.cfg`` and ``yolov3-tiny.cfg``
-(convolutional, shortcut, route, upsample, maxpool, yolo) and runs on Apple
-Silicon (``mps``), CUDA or CPU. On OpenCV 4.x the ``opencv`` backend can be
-selected instead.
-
-Posture
--------
-MobileNetV2 (torchvision) with a new ``Dropout -> Linear(1280, 3)`` head that
-classifies cropped "person" boxes as standing / sitting / walking.
-"""
 from __future__ import annotations
 
 import logging
