@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Build a sitting / standing / walking person-crop dataset from public data.
-
-
-
-"""
+"""Build a sitting / standing / walking person-crop dataset from public data. """
 from __future__ import annotations
 
 import argparse
