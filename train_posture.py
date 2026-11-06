@@ -1,37 +1,5 @@
 #!/usr/bin/env python3
-"""Fine-tune MobileNetV2 to classify person crops as sitting / standing / walking.
 
-Dataset layout (torchvision ImageFolder; class folder names become labels)::
-
-    data/posture/
-        train/{sitting,standing,walking}/*.jpg
-        val/{sitting,standing,walking}/*.jpg
-
-If there is no ``val/`` folder, a stratified split of ``train/`` (or of the
-root folder itself) is used (``--val-split``, default 0.2).
-
-Crops should look like what the pipeline feeds the model at inference time,
-i.e. YOLOv3 "person" boxes. Use ``--crop-persons`` to convert full-scene
-photos (sorted into class folders) into such crops first::
-
-    python train_posture.py --crop-persons raw_photos/ data/posture/train
-
-Recipe (aimed at >= 90% validation accuracy on a clean, balanced dataset with
-a few hundred crops per class):
-
-1. ImageNet-pretrained MobileNetV2, new Dropout(0.3) -> Linear(1280, 3) head.
-2. Aspect-preserving pad-to-square (same as inference) + strong augmentation:
-   random-resized-crop, h-flip, small affine, colour jitter, random erasing.
-3. Class-balanced sampling and label smoothing (0.1).
-4. Phase 1 (``--freeze-epochs``): backbone frozen (BatchNorm in eval), only the
-   head trains at a high LR.
-5. Phase 2: whole network unfrozen, discriminative LRs (backbone 10x lower),
-   AdamW + linear warm-up + cosine decay.
-6. Best-val-accuracy checkpointing with early stopping, then a confusion
-   matrix + per-class accuracy report.
-
-The saved checkpoint is directly loadable by ``models.PostureClassifier``.
-"""
 from __future__ import annotations
 
 import argparse
