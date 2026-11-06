@@ -1,29 +1,8 @@
 #!/usr/bin/env python3
 """Build a sitting / standing / walking person-crop dataset from public data.
 
-Sources (research / non-commercial use - check each license before shipping):
-  * COCO 2017 person keypoints  (annotations_trainval2017.zip, ~250 MB; CC-BY Flickr images)
-  * MPII Human Pose via the Voxel51 Hugging Face mirror (samples.json, ~63 MB;
-    BSD-2 but non-commercial in practice: the authors don't own image copyright)
 
-Neither dataset has per-person posture labels, so each annotated person is
-labelled from joint geometry (knee angles, thigh orientation, stride, torso
-tilt). MPII's image-level activity names are used as a veto (e.g. "sitting"
-activity + standing geometry -> discarded) and, because a single frame can't
-reliably tell walking from standing, MPII walking requires a walk-related
-activity. Only images that yield a candidate are downloaded.
 
-Each crop is the pipeline's own YOLOv3 person box (matched to the annotated
-person, + the same 8% margin) so training crops look exactly like inference
-crops. Output::
-
-    data/posture/train/{sitting,standing,walking}/*.jpg
-    data/posture/val/{sitting,standing,walking}/*.jpg     (split by source image - no leakage)
-    data/posture/manifest.csv                             (source, image, label, features)
-    data/posture/review_<class>.jpg                       (contact sheets for spot-checking)
-
-Labels are heuristic (expect a few % noise). Review the contact sheets, delete
-wrong crops, then:  python train_posture.py --data-dir data/posture
 """
 from __future__ import annotations
 
