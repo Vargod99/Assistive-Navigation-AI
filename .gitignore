@@ -1,0 +1,21 @@
+# Environments / caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+
+# Downloaded / generated assets (recreate with setup_weights.py and build_posture_dataset.py)
+weights/
+data/
+*.pth
+*.pt
+*.weights
+*.part
+
+# Generated outputs
+test_scene.jpg
+scene_annotated.jpg
+*_annotated.jpg
+*.mp4
